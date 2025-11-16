@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>🔓 Mở khoá nội dung</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #b5f0ff, #e0c3fc, #f9f9f9);
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      color: #222;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 18px;
+      padding: 25px 30px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+      text-align: center;
+      max-width: 360px;
+      animation: fadeIn 0.5s ease;
+      margin-bottom: 100px;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+      padding: 12px 20px;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      position: relative;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+
+    #ttBtn { background: linear-gradient(90deg, #ff0000, #ff4d4d); }
+    #zlBtn { background: linear-gradient(90deg, #0088cc, #33b1ff); }
+
+    .action.success {
+      background: linear-gradient(90deg, #2ecc71, #52d681) !important;
+    }
+
+    .checkmark {
+      position: absolute;
+      right: 15px;
+      font-size: 18px;
+      display: none;
+    }
+
+    .action.success .checkmark {
+      display: inline;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    /* Nút tải lại – ẩn hoàn toàn đến khi hết 10s */
+    #retryBtn {
+      margin-top: 15px;
+      display: none;
+      padding: 10px 16px;
+      background: orange;
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h2>🔒 Nội dung bị khóa</h2>
+    <p>Vui lòng ấn vào cả 2 nút dưới đây để mở khóa</p>
+
+    <div id="ttBtn" class="action">
+      ▶️ Follow TikTok
+      <span class="checkmark">✅</span>
+    </div>
+
+    <div id="zlBtn" class="action">
+      💬 Tham gia nhóm Zalo
+      <span class="checkmark">✅</span>
+    </div>
+
+    <div id="status">❌ Chưa hoàn thành.</div>
+
+    <!-- Chỉ hiện sau khi đếm ngược xong -->
+    <a id="retryBtn" href="base.apk" download>🔄 Nhấn vào đây để tải lại nếu có sự cố</a>
+  </div>
+
+  <script>
+    const ttBtn = document.getElementById("ttBtn");
+    const zlBtn = document.getElementById("zlBtn");
+    const statusEl = document.getElementById("status");
+    const retryBtn = document.getElementById("retryBtn");
+
+    let ttDone = false;
+    let zlDone = false;
+
+    function startCountdown() {
+      let timeLeft = 10;
+      statusEl.innerText = `⏳ Tự động tải file sau ${timeLeft} giây...`;
+
+      const timer = setInterval(() => {
+        timeLeft--;
+        statusEl.innerText = `⏳ Tự động tải file sau ${timeLeft} giây...`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+
+          statusEl.innerText = "⬇️ Đang tải file...";
+          window.location.href = retryBtn.href; // tự tải
+
+          // Hiện nút tải lại sau 10s
+          retryBtn.style.display = "inline-block";
+        }
+      }, 1000);
+    }
+
+    function checkCompleted() {
+      if (ttDone && zlDone) {
+        statusEl.innerText = "⏳ Chuẩn bị tải...";
+        startCountdown(); // bắt đầu đếm ngược
+      }
+    }
+
+    ttBtn.onclick = () => {
+      if (!ttDone) {
+        ttDone = true;
+        ttBtn.classList.add("success");
+        window.open("https://tiktok.com/@plongdev.128", "_blank");
+        statusEl.innerText = "✅ Đã nhấn Follow TikTok!";
+        checkCompleted();
+      }
+    };
+
+    zlBtn.onclick = () => {
+      if (!zlDone) {
+        zlDone = true;
+        zlBtn.classList.add("success");
+        window.open("https://zalo.me/g/pvkacy065", "_blank");
+        statusEl.innerText = "✅ Đã tham gia nhóm Zalo!";
+        checkCompleted();
+      }
+    };
+  </script>
+
+</body>
+</html>
